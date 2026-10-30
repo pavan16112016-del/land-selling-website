@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandVista | Explore Available Lands</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="index.html">LandVista<span>.</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Explore Lands</a>
+      <a href="sell-land.html">Sell Land</a>
+    </nav>
+    <a class="nav-button" href="sell-land.html">+ List Property</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">ALL LISTINGS</p>
+        <h1>Explore available <span>lands</span></h1>
+        <p class="hero-description">Search land listings that fit your needs and budget.</p>
+
+        <form id="filterForm" class="search-box" style="display: flex; flex-direction: column; gap: 10px; max-width: 600px; margin: 0 auto;">
+          <div style="display: flex; gap: 10px;">
+            <input id="location" type="text" placeholder="Location, e.g. Bangalore" style="flex: 1; padding: 10px;">
+            <select id="type" style="flex: 1; padding: 10px;">
+              <option value="">All types</option>
+              <option value="Residential">Residential</option>
+              <option value="Agricultural">Agricultural</option>
+              <option value="Commercial">Commercial</option>
+            </select>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <input id="maxPrice" type="number" placeholder="Maximum price (₹)" style="flex: 1; padding: 10px;">
+            <button type="submit" style="flex: 1; padding: 10px; background-color: #1b4332; color: white; border: none; cursor: pointer;">Apply Filters</button>
+          </div>
+          <button type="button" id="resetBtn" style="padding: 10px; background-color: #e8efe9; border: none; cursor: pointer;">Reset</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="listings">
+      <p id="statusMsg" style="text-align: center; font-weight: bold; margin-bottom: 1.5rem;">Loading listings...</p>
+      <div id="landsGrid" class="land-grid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="index.html">LandVista<span>.</span></a>
+    <p>Find land. Build possibilities.</p>
+  </footer>
+
+  <script>
+    const API_URL = "http://localhost:5000/api/lands";
+    const landsGrid = document.getElementById("landsGrid");
+    const statusMsg = document.getElementById("statusMsg");
+    const filterForm = document.getElementById("filterForm");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function buildImageUrl(imagePath) {
+      if (!imagePath) return "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800";
+      if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) return imagePath;
+      return `http://localhost:5000/${imagePath.replace(/^\/+/, "")}`;
+    }
+
+    async function loadProperties(queryString = "") {
+      statusMsg.textContent = "Loading listings...";
+      landsGrid.innerHTML = "";
+
+      try {
+        const url = queryString ? `${API_URL}?${queryString}` : API_URL;
+        const res = await fetch(url);
+        
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+
+        const lands = await res.json();
+
+        if (!lands || lands.length === 0) {
+          statusMsg.textContent = "No land listings found matching your criteria.";
+          return;
+        }
+
+        statusMsg.textContent = `Showing ${lands.length} property listing(s).`;
+
+        lands.forEach(land => {
+          const card = document.createElement("article");
+          card.className = "land-card";
+
+          card.innerHTML = `
+            <img class="land-image" src="${buildImageUrl(land.image)}" alt="${land.title}">
+            <div class="land-card-content">
+              <h3>${land.title}</h3>
+              <p>📍 ${land.location}</p>
+              <p><strong>₹${Number(land.price).toLocaleString("en-IN")}</strong></p>
+              <p>Type: ${land.type}</p>
+              <p>Size: ${Number(land.area).toLocaleString("en-IN")} sq ft</p>
+              <a class="nav-button" href="property-details.html?id=${land._id}">View Details</a>
+            </div>
+          `;
+          landsGrid.appendChild(card);
+        });
+      } catch (err) {
+        console.error(err);
+        statusMsg.textContent = "Unable to connect to database server. Make sure node server.js is running.";
+      }
+    }
+
+    filterForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const loc = document.getElementById("location").value.trim();
+      const type = document.getElementById("type").value;
+      const maxPrice = document.getElementById("maxPrice").value;
+
+      const params = new URLSearchParams();
+      if (loc) params.append("location", loc);
+      if (type) params.append("type", type);
+      if (maxPrice) params.append("maxPrice", maxPrice);
+
+      loadProperties(params.toString());
+    });
+
+    resetBtn.addEventListener("click", () => {
+      document.getElementById("location").value = "";
+      document.getElementById("type").value = "";
+      document.getElementById("maxPrice").value = "";
+      loadProperties();
+    });
+
+    // Load all properties immediately on page load
+    loadProperties();
+  </script>
+</body>
+</html>

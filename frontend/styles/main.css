@@ -1,0 +1,356 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --green: #174b39;
+  --lime: #c9f17b;
+  --cream: #f8f8f2;
+  --text: #202a24;
+  --muted: #727b74;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: white;
+  color: var(--text);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar {
+  min-height: 78px;
+  padding: 18px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.logo {
+  font-family: 'Manrope', sans-serif;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.logo span {
+  color: #77a947;
+}
+
+nav {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #59645c;
+  font-size: 14px;
+}
+
+nav a:hover,
+.view-all:hover {
+  color: #528238;
+}
+
+.nav-button {
+  display: inline-block;
+  background: var(--green);
+  color: white;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.hero {
+  margin: 0 3%;
+  min-height: 470px;
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, rgba(10, 35, 25, .91), rgba(10, 35, 25, .28)),
+    url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1800&q=85')
+    center/cover;
+  display: flex;
+  align-items: center;
+  padding: 65px 7%;
+  color: white;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 750px;
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #77a947;
+  margin-bottom: 15px;
+}
+
+.hero .eyebrow {
+  color: var(--lime);
+}
+
+.hero h1 {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(36px, 5vw, 60px);
+  line-height: 1.13;
+  max-width: 700px;
+  margin-bottom: 18px;
+}
+
+.hero h1 span {
+  color: var(--lime);
+}
+
+.hero-description {
+  line-height: 1.8;
+  max-width: 520px;
+  color: #e0e7e1;
+  margin-bottom: 28px;
+}
+
+.search-box {
+  display: flex;
+  gap: 10px;
+  background: white;
+  padding: 9px;
+  border-radius: 12px;
+  max-width: 760px;
+}
+
+.search-box input,
+.search-box select {
+  flex: 1;
+  min-width: 0;
+  padding: 13px 10px;
+  border: 0;
+  outline: none;
+  background: white;
+  color: #38443b;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+}
+
+.search-box button {
+  background: var(--lime);
+  color: #203c26;
+  font-weight: 700;
+  padding: 14px 20px;
+  border-radius: 8px;
+}
+
+.trust-text {
+  margin-top: 17px;
+  font-size: 12px;
+  color: #e2e9e3;
+}
+
+.listings {
+  padding: 75px 7%;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.section-heading h2,
+.sell-banner h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 30px;
+}
+
+.view-all {
+  font-weight: 700;
+  color: var(--green);
+}
+
+.land-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 23px;
+}
+
+.land-card {
+  border: 1px solid #e8ece7;
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.land-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px #173b2010;
+}
+
+.land-card img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  background: #edf0e9;
+}
+
+.land-info {
+  padding: 20px;
+}
+
+.land-type {
+  display: inline-block;
+  background: #edf5e7;
+  color: #386333;
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.land-info h3 {
+  font-size: 18px;
+  margin: 13px 0 7px;
+}
+
+.land-location {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.land-price {
+  color: var(--green);
+  font-size: 23px;
+  font-weight: 800;
+  margin: 15px 0 8px;
+}
+
+.land-size {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.details-link {
+  display: inline-block;
+  margin-top: 17px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.sell-banner {
+  margin: 0 7% 70px;
+  padding: 38px;
+  background: var(--cream);
+  border-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+}
+
+.sell-banner p:not(.eyebrow) {
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.7;
+}
+
+footer {
+  padding: 28px 7%;
+  background: #f6f7f2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+footer p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.empty-message {
+  padding: 25px 0;
+  color: var(--muted);
+}
+
+@media (max-width: 850px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .land-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    padding: 45px 5%;
+  }
+}
+
+@media (max-width: 580px) {
+  .navbar {
+    padding: 18px 5%;
+  }
+
+  nav {
+    gap: 14px;
+  }
+
+  .navbar > .nav-button {
+    display: none;
+  }
+
+  .hero {
+    min-height: 520px;
+  }
+
+  .search-box {
+    flex-direction: column;
+  }
+
+  .search-box input,
+  .search-box select {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .land-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .listings {
+    padding: 48px 5%;
+  }
+
+  .section-heading h2 {
+    font-size: 24px;
+  }
+
+  .sell-banner,
+  footer {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 24px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  footer {
+    margin: 0;
+  }
+}

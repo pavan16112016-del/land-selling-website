@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Details | LandVista</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/forms.css">
+  <style>
+    .details-page {
+      max-width: 950px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .details-image {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin: 20px 0;
+      background: #edf0e9;
+    }
+
+    .details-panel {
+      border: 1px solid #e8ece7;
+      padding: 28px;
+      border-radius: 14px;
+      margin-bottom: 30px;
+    }
+
+    .details-panel h1 {
+      margin: 15px 0;
+      font-size: 32px;
+    }
+
+    .details-price {
+      color: #174b39;
+      font-size: 28px;
+      font-weight: 800;
+      margin: 15px 0;
+    }
+
+    .details-panel p {
+      margin: 12px 0;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #174b39;
+      font-weight: 700;
+    }
+
+    @media (max-width: 580px) {
+      .details-image { height: 230px; }
+      .details-panel h1 { font-size: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="index.html">LandVista<span>.</span></a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Explore Lands</a>
+      <a href="sell-land.html">Sell Land</a>
+    </nav>
+  </header>
+
+  <main class="details-page">
+    <a class="back-link" href="properties.html">← Back to listings</a>
+    <div id="propertyDetails">Loading property details...</div>
+  </main>
+
+  <footer>
+    <a class="logo" href="index.html">LandVista<span>.</span></a>
+    <p>Find land. Build possibilities.</p>
+  </footer>
+
+  <script src="scripts/property-details.js"></script>
+</body>
+</html>

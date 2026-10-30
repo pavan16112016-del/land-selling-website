@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LandVista | Find Your Land</title>
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+  <header class="navbar">
+    <a class="logo" href="index.html">LandVista<span>.</span></a>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Explore Lands</a>
+      <a href="sell-land.html">Sell Land</a>
+    </nav>
+
+    <a class="nav-button" href="sell-land.html">+ List Property</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">YOUR LAND, YOUR FUTURE</p>
+
+        <h1>Find the perfect land for your
+          <span>next chapter.</span>
+        </h1>
+
+        <p class="hero-description">
+          Explore land opportunities, compare prices and discover
+          a place to build your future.
+        </p>
+
+        <form id="searchForm" class="search-box">
+          <input
+            id="location"
+            type="text"
+            placeholder="Enter a location"
+          >
+
+          <select id="landType">
+            <option value="">All land types</option>
+            <option value="Residential">Residential</option>
+            <option value="Agricultural">Agricultural</option>
+            <option value="Commercial">Commercial</option>
+          </select>
+
+          <button type="submit">Search Lands</button>
+        </form>
+
+        <p class="trust-text">
+          Discover properties that match your plans.
+        </p>
+      </div>
+    </section>
+
+    <section class="listings" id="listings">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">HANDPICKED OPPORTUNITIES</p>
+          <h2>Latest land listings</h2>
+        </div>
+
+        <a href="properties.html" class="view-all">View all →</a>
+      </div>
+
+      <p id="statusMessage" role="status">
+        Loading land listings...
+      </p>
+
+      <div id="featuredLands" class="land-grid"></div>
+    </section>
+
+    <section class="sell-banner">
+      <div>
+        <p class="eyebrow">HAVE LAND TO SELL?</p>
+        <h2>Your property deserves to be discovered.</h2>
+        <p>Create a listing and connect with interested buyers.</p>
+      </div>
+
+      <a href="sell-land.html" class="nav-button">
+        List Your Land →
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <a class="logo" href="index.html">LandVista<span>.</span></a>
+    <p>Find land. Build possibilities.</p>
+  </footer>
+
+  <script>
+    const API_URL = "http://localhost:5000/api/lands";
+
+    const featuredLands = document.getElementById("featuredLands");
+    const statusMessage = document.getElementById("statusMessage");
+    const searchForm = document.getElementById("searchForm");
+
+    // Formats image path into full URL if relative
+    function buildImageUrl(imagePath) {
+      if (!imagePath) {
+        return "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900";
+      }
+      if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+        return imagePath;
+      }
+      return `http://localhost:5000/${imagePath.replace(/^\/+/, "")}`;
+    }
+
+    // Fetch land records from backend (supports optional search query)
+    async function fetchLands(queryString = "") {
+      statusMessage.textContent = "Loading land listings...";
+      featuredLands.replaceChildren();
+
+      try {
+        const url = queryString ? `${API_URL}?${queryString}` : API_URL;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error("Server returned HTTP " + response.status);
+        }
+
+        const result = await response.json();
+        let lands = [];
+
+        if (Array.isArray(result)) {
+          lands = result;
+        } else if (Array.isArray(result.lands)) {
+          lands = result.lands;
+        } else if (Array.isArray(result.data)) {
+          lands = result.data;
+        } else {
+          throw new Error("API response is missing land data.");
+        }
+
+        displayLands(lands);
+      } catch (error) {
+        console.error("Error fetching lands:", error);
+
+        statusMessage.textContent =
+          "Could not load lands. Check that your backend server is running on port 5000.";
+
+        const retryButton = document.createElement("button");
+        retryButton.type = "button";
+        retryButton.textContent = "Try Again";
+        retryButton.addEventListener("click", () => fetchLands());
+
+        featuredLands.appendChild(retryButton);
+      }
+    }
+
+    // Render cards to DOM
+    function displayLands(lands) {
+      featuredLands.replaceChildren();
+
+      if (lands.length === 0) {
+        statusMessage.textContent =
+          "No lands found matching your search. Try another query or location.";
+        return;
+      }
+
+      lands.forEach((land) => {
+        const card = document.createElement("article");
+        card.className = "land-card";
+
+        const image = document.createElement("img");
+        image.className = "land-image";
+        image.src = buildImageUrl(land.image || land.imageUrl || land.images?.[0]);
+        image.alt = land.title || land.name || "Land for sale";
+        image.loading = "lazy";
+
+        image.addEventListener("error", () => {
+          image.src = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900";
+          image.alt = "Land image fallback";
+        });
+
+        const content = document.createElement("div");
+        content.className = "land-card-content";
+
+        const title = document.createElement("h3");
+        title.textContent = land.title || land.name || "Land for Sale";
+
+        const location = document.createElement("p");
+        location.textContent = "📍 " + (land.location || "Location not provided");
+
+        const price = document.createElement("p");
+        const amount = land.price ?? land.amount;
+        price.textContent = amount != null
+          ? "₹" + Number(amount).toLocaleString("en-IN")
+          : "Price on request";
+
+        const type = document.createElement("p");
+        type.textContent = "Type: " + (land.type || land.landType || "Residential");
+
+        const size = document.createElement("p");
+        const areaVal = land.area || land.size;
+        size.textContent = "Size: " + (areaVal ? Number(areaVal).toLocaleString("en-IN") + " sq ft" : "Not specified");
+
+        const button = document.createElement("a");
+        button.className = "nav-button";
+        button.textContent = "View Details";
+        button.href = "property-details.html?id=" + encodeURIComponent(land._id || land.id || "");
+
+        content.append(title, location, price, type, size, button);
+        card.append(image, content);
+        featuredLands.appendChild(card);
+      });
+
+      statusMessage.textContent = "Found " + lands.length + " land listing(s).";
+    }
+
+    // Search event
+    searchForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const locationQuery = document.getElementById("location").value.trim();
+      const selectedType = document.getElementById("landType").value.trim();
+
+      const params = new URLSearchParams();
+      if (locationQuery) params.append("location", locationQuery);
+      if (selectedType) params.append("type", selectedType);
+
+      fetchLands(params.toString());
+
+      document.getElementById("listings")?.scrollIntoView({
+        behavior: "smooth"
+      });
+    });
+
+    // Load initial listings on page startup
+    fetchLands();
+  </script>
+</body>
+</html>

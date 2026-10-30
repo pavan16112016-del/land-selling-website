@@ -1,0 +1,95 @@
+.form-page {
+  background: #f8f8f2;
+  padding: 55px 20px 75px;
+}
+
+.form-heading {
+  text-align: center;
+  margin: 0 auto 30px;
+}
+
+.form-heading h1 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 38px;
+  margin-bottom: 10px;
+}
+
+.form-heading > p:last-child {
+  color: #727b74;
+  line-height: 1.6;
+}
+
+.land-form {
+  background: white;
+  max-width: 650px;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #e8ece7;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px #173b2008;
+}
+
+.land-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  margin: 18px 0 8px;
+}
+
+.land-form input,
+.land-form select,
+.land-form textarea {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #dfe5dd;
+  border-radius: 7px;
+  font: inherit;
+  font-size: 14px;
+  outline-color: #77a947;
+  background: white;
+}
+
+.land-form textarea {
+  resize: vertical;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-row > div {
+  min-width: 0;
+}
+
+.land-form button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 25px;
+  background: #174b39;
+  color: white;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+#formMessage {
+  margin-top: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 580px) {
+  .land-form {
+    padding: 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-heading h1 {
+    font-size: 30px;
+  }
+}
